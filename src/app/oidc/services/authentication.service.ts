@@ -1,20 +1,26 @@
+import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { User, UserManager, WebStorageStateStore } from 'oidc-client';
 import { UserManagerSettings } from '../models';
 
 @Injectable()
 export class AuthenticationService {
-  url = 'http://localhost:5555'
+  url = environment.url;
+
   isUserDefined = false;
   private _user: User | null;
   private _userManager: UserManager;
 
   isLoggedIn() {
-    return this._user != null && !this._user.expired;
+    let res = this._user != null && !this._user.expired;
+    console.log('this.isLoggedIn', res);
+    return res;
   }
 
   getAccessToken() {
-    return this._user ? this._user.access_token : '';
+    let res = this._user ? this._user.access_token : '';
+    console.log('this.getAccessToken', res);
+    return res;
   }
 
   getClaims() {
@@ -22,6 +28,7 @@ export class AuthenticationService {
   }
 
   startAuthentication(): Promise<void> {
+    console.log('this.startAuthentication')
     this.getUserManager();
     return this._userManager.signinRedirect();
   }
